@@ -1,0 +1,132 @@
+<!-- -*- tab-width: 4; fill-column: 96 -*- -->
+<!--
+    Application Security Threat Attack Modeling (ASTAM)
+
+    Copyright (C) 2017 Applied Visions - http://securedecisions.com
+
+    Written by Aspect Security - http://aspectsecurity.com
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.secdec</groupId>
+		<artifactId>astam-cqf-ce-api</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
+	</parent>
+
+	<artifactId>astam-cqf-ce-api-client-java</artifactId>
+	<packaging>jar</packaging>
+
+	<description>ASTAM CQF CE REST API Client Library for Java</description>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<java.version>1.7</java.version>
+
+		<target.client.language>java</target.client.language>
+		<target.client.generator.profile>${target.client.language}</target.client.generator.profile>
+		<generated.module.directory>${project.build.directory}/generated-sources/client</generated.module.directory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>logging-interceptor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>okhttp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>astam-cqf-ce-api-spec</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>${generated.module.directory}/src/main/${target.client.language}</sourceDirectory>
+		<testSourceDirectory>${generated.module.directory}/src/test/${target.client.language}</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>${swagger-codegen-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>swagger-codegen</id>
+						<phase>generate-sources</phase>
+						<goals><goal>generate</goal></goals>
+						<configuration>
+							<language>${target.client.generator.profile}</language>
+							<addCompileSourceRoot>false</addCompileSourceRoot>
+							<inputSpec>${cqf-ce-api.spec.file}</inputSpec>
+							<apiPackage>${package.cqf.api.rest}</apiPackage>
+							<modelPackage>${package.cqf.api.models}</modelPackage>
+							<invokerPackage>${package.cqf.api.rest.io}</invokerPackage>
+							<output>${generated.module.directory}</output>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals><goal>unpack</goal></goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.secdec</groupId>
+									<artifactId>astam-cqf-ce-api-spec</artifactId>
+									<version>${cqf-ce-api.spec.version}</version>
+									<outputDirectory>${cqf-ce-api.spec.directory}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,417 @@
+<!-- -*- tab-width: 4; fill-column: 96 -*-
+
+	[1] To build normally:
+
+		mvn clean install
+
+	A normal build performs resource management, license management, compiling, and so forth.
+
+	[2] To generate an aggregate "THIRD-PARTY.txt" that covers all project dependencies:
+	
+		mvn license:aggregate-add-third-party
+
+-->
+<!--
+    Application Security Threat Attack Modeling (ASTAM)
+
+    Copyright (C) 2017 Applied Visions - http://securedecisions.com
+
+    Written by Aspect Security - http://aspectsecurity.com
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.secdec</groupId>
+	<artifactId>astam-cqf-ce</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<description>ASTAM CQF CE</description>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!--dependency versions:-->
+		<commons-io.version>2.4</commons-io.version>
+		<commons-configuration2.version>2.1</commons-configuration2.version>
+		<gson.version>2.6.2</gson.version>
+		<java.version>1.8</java.version>
+		<javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
+		<jersey.version>2.25</jersey.version>
+		<junit.version>4.12</junit.version>
+		<joda-time.version>2.9.3</joda-time.version>
+		<mockito.version>1.10.19</mockito.version>
+		<okhttp.version>2.7.5</okhttp.version>
+		<servlet.version>3.0.1</servlet.version>
+		<slf4j.version>1.7.12</slf4j.version>
+		<swagger-annotations.version>1.5.9</swagger-annotations.version>
+
+		<!--dependency versions (2nd tier):-->
+		<jetty.version>9.2.14.v20151106</jetty.version><!--determined by jersey version-->
+
+		<!--plugin versions:-->
+		<javadoc-plugin.version>2.10.4</javadoc-plugin.version>
+		<jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
+		<license-maven-plugin.version>1.10</license-maven-plugin.version>
+		<maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
+		<maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
+		<maven-failsafe-plugin.version>2.19.1</maven-failsafe-plugin.version>
+		<maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+		<maven-war-plugin.version>3.0.0</maven-war-plugin.version>
+		<swagger-codegen-maven-plugin.version>2.2.1</swagger-codegen-maven-plugin.version>
+
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<cqf-ce-api.spec.version>${project.version}</cqf-ce-api.spec.version>
+		<cqf-ce-api.spec.directory>${project.build.directory}/dependency/astam-cqf-ce-api-spec</cqf-ce-api.spec.directory>
+		<cqf-ce-api.spec.file>${cqf-ce-api.spec.directory}/cqf-ce-api.spec.yaml</cqf-ce-api.spec.file>
+
+		<package.cqf>com.secdec.astam.cqf</package.cqf>
+		<package.cqf.api>${package.cqf}.api</package.cqf.api>
+		<package.cqf.api.models>${package.cqf.api}.models</package.cqf.api.models>
+		<package.cqf.api.rest>${package.cqf.api}.rest</package.cqf.api.rest>
+		<package.cqf.api.rest.io>${package.cqf.api.rest}.io</package.cqf.api.rest.io>
+		<package.cqf.api.rest.responders>${package.cqf.api.rest}.responders</package.cqf.api.rest.responders>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Applied Visions, Inc.</name>
+		<url>https://www.securedecisions.com/</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>srogers</id>
+			<name>Stephen Rogers</name>
+			<email>inbox.c7r@steve-rogers.com</email>
+			<organization>Siege Technologies, LLC</organization>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<distributionManagement />
+
+	<issueManagement />
+
+	<scm />
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>modules</report>
+							<report>dependencies</report>
+							<report>license</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration2</groupId>
+			<artifactId>commons-configuration2</artifactId>
+			<version>${commons-configuration2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>logging-interceptor</artifactId>
+			<version>${okhttp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>${javax.ws.rs-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+	</dependencies>
+	</dependencyManagement>
+
+	<dependencies />
+
+	<modules />
+
+	<build>
+		<pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<inherited>false</inherited>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven-dependency-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<configuration>
+					<includes>
+						<include>**/IntegrationTest*.java</include>
+						<include>**/*IntegrationTest.java</include>
+						<include>**/*IntegrationTestCase.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${javadoc-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<phase>process-classes</phase>
+						<goals><goal>javadoc</goal></goals>
+						<configuration>
+							<destDir>api-docs</destDir>
+							<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
+
+							<debug>false</debug>
+							<failOnError>false</failOnError>
+							<validateLinks>false</validateLinks>
+							<applyJavadocSecurityFix>true</applyJavadocSecurityFix>
+
+							<detectLinks>false</detectLinks>
+							<detectJavaAPILink>true</detectJavaAPILink>
+							<detectOfflineLinks>true</detectOfflineLinks>
+
+							<show>package</show>
+							<keywords>true</keywords>
+							<linkSource>false</linkSource>
+							<noQualifier>false</noQualifier>
+							<breakIterator>true</breakIterator>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<includes>
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/*IntegrationTest.java</exclude>
+						<exclude>**/*IntegrationTestCase.java</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>${license-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>process-sources</phase>
+						<goals><goal>update-file-header</goal></goals>
+						<configuration>
+							<inceptionYear>2009</inceptionYear>
+							<licenseName>apache_v2</licenseName>
+							<canUpdateCopyright>false</canUpdateCopyright>
+							<canUpdateDescription>false</canUpdateDescription>
+							<canUpdateLicense>false</canUpdateLicense>
+							<emptyLineAfterHeader>true</emptyLineAfterHeader>
+							<roots>
+								<root>src/main</root>
+								<root>src/test</root>
+							</roots>
+							<excludes>
+								<exclude>**/Makefile</exclude>
+								<exclude>**/pom.xml</exclude>
+								<exclude>**/*.json</exclude>
+								<exclude>**/*.spec.yaml</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-cli</id>
+						<configuration>
+							<useMissingFile>true</useMissingFile>
+							<licenseMerges>
+								<licenseMerge>Apache License 1.1|Apache Software License, Version 1.1</licenseMerge>
+
+								<licenseMerge>Apache License 2.0|The Apache Software License, Version 2.0</licenseMerge>
+								<licenseMerge>Apache License 2.0|Apache Software License, Version 2.0</licenseMerge>
+								<licenseMerge>Apache License 2.0|Apache License, Version 2.0</licenseMerge>
+								<licenseMerge>Apache License 2.0|Apache 2.0</licenseMerge>
+								<licenseMerge>Apache License 2.0|Apache 2</licenseMerge>
+
+								<licenseMerge>BSD 3-Clause License|The New BSD License</licenseMerge>
+								<licenseMerge>BSD 3-Clause License|New BSD License</licenseMerge>
+								<licenseMerge>BSD 3-Clause License|BSD</licenseMerge>
+
+								<licenseMerge>Eclipse Public License 1.0|Eclipse Public License 1.0</licenseMerge>
+
+								<licenseMerge>GNU LGPL 3.0|GNU Lesser General Public License, Version 3.0</licenseMerge>
+								<licenseMerge>GNU LGPL 3.0|Lesser General Public License (LGPL) v 3.0</licenseMerge>
+
+								<licenseMerge>MIT License|MIT License</licenseMerge>
+							</licenseMerges>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-third-party</id>
+						<configuration>
+							<useMissingFile>true</useMissingFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty-maven-plugin.version}</version>
+			</plugin>
+		</plugins>
+		</pluginManagement>
+            
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

